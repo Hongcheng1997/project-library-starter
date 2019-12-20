@@ -1,0 +1,23 @@
+{
+  "name": "project-library-starter",
+  "version": "1.0.0",
+  "description": "基于 webpack 配置的项目启动程序",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hongcheng1997/project-library-starter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hongcheng1997/project-library-starter/issues"
+  },
+  "homepage": "https://github.com/Hongcheng1997/project-library-starter#readme",
+  "devDependencies": {
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10"
+  }
+}
