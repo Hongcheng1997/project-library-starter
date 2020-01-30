@@ -10,6 +10,7 @@
     
 # 扩展功能
 ...
+
 # 配置详细文档
 
 * [配置文档](https://github.com/Hongcheng1997/blog/issues/15)
