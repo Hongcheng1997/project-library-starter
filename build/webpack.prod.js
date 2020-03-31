@@ -1,6 +1,7 @@
 
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const merge = require('webpack-merge');
+const Happypack = require('happypack');
 const common = require('./webpack.common.js');
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const smp = new SpeedMeasurePlugin();
@@ -12,13 +13,17 @@ const config = merge(common, {
     rules: [
       {
         test: /\.js$/,
-        use: ['cache-loader', 'babel-loader'],
+        use: 'Happypack/loader?id=js',
         exclude: /node_modules/
       }
     ]
   },
   plugins: [
-    new CleanWebpackPlugin()
+    new CleanWebpackPlugin(),
+    new Happypack({
+      id: 'js',
+      use: ['babel-loader?cacheDirectory=true']
+    })
   ]
 });
 
