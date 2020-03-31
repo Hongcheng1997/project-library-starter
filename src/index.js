@@ -1,11 +1,12 @@
-import './style.css';
+class MyWebpack {
+  constructor() {
+    this.name = 'ghc1'
+    console.log(this.getName())
+  }
 
-function component() {
-    var element = document.createElement('h1');
-    element.innerHTML = 'Hello webpack'
-    element.classList.add('app');
-
-    return element;
+  getName() {
+    return this.name
+  }
 }
 
-document.body.appendChild(component());
+new MyWebpack()
