@@ -8,6 +8,9 @@
     "build": "webpack --config build/webpack.prod.js",
     "lint": "eslint src"
   },
+  "bin": {
+    "q-cli": "./bin/q-cli.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Hongcheng1997/project-library-starter.git"
