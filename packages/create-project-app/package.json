@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "create-project-app": "./bin/create-project-app.js"
+    "create-project-app": "./index.js"
   },
   "author": "gaohongcheng",
   "license": "ISC",

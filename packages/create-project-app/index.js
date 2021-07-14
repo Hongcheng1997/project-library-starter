@@ -1,3 +1,5 @@
-const { init } = require('./createProjectApp');
+#!/usr/bin/env node
+
+const { init } = require('./bin/createProjectApp');
 
 init();

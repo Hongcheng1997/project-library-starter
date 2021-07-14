@@ -17,5 +17,8 @@
   "homepage": "https://github.com/Hongcheng1997/project-library-starter#readme",
   "devDependencies": {
     "lerna": "^3.22.1"
+  },
+  "dependencies": {
+    "pls-template": "0.0.1"
   }
 }

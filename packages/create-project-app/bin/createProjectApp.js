@@ -125,4 +125,6 @@ function copyTemp(root, templatePath) {
   fs.copySync(templateDir, root);
 }
 
-init();
+module.exports = {
+  init,
+};
