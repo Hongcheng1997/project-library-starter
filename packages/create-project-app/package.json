@@ -12,6 +12,9 @@
   "author": "gaohongcheng",
   "license": "ISC",
   "dependencies": {
-    "cross-spawn": "^7.0.3"
+    "cross-spawn": "^7.0.3",
+    "commander": "4.1.1",
+    "chalk": "4.1.0",
+    "fs-extra": "9.0.1"
   }
 }
