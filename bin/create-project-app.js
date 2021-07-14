@@ -40,6 +40,40 @@ function init() {
   run(projectName);
 }
 
+const install = async (root) => {
+  const templateName = 'pls-template';
+  const command = 'yarnpkg';
+  const remove = 'remove';
+  await Spawn(command, ['add', '--exact', templateName, '--cwd', root], { stdio: 'inherit' });
+
+  let args = ['add', '--exact'];
+  const templatePath = path.dirname(
+    require.resolve(`${templateName}/package.json`, { paths: [root] })
+  );
+  const templateJsonPath = path.join(templatePath, 'template.json');
+  let templateJson = {};
+  if (fs.existsSync(templateJsonPath)) {
+    templateJson = require(templateJsonPath);
+  }
+  const templatePackage = templateJson.package || {};
+  const dependenciesToInstall = Object.entries({
+    ...templatePackage.dependencies,
+    ...templatePackage.devDependencies,
+  });
+  args = args.concat(
+    dependenciesToInstall.map(([dependency, version]) => {
+      return `${dependency}@${version}`;
+    })
+  );
+  writePackage(root, templatePackage);
+  copyTemp(root, templatePath);
+  
+  spawn.sync(command, [...args, '--cwd', root], { stdio: 'inherit' });
+  spawn.sync(command, [remove, templateName], {
+    stdio: 'inherit',
+  });
+};
+
 function run(name) {
   const root = path.resolve(name);
   const appName = path.basename(root);
@@ -59,56 +93,36 @@ function run(name) {
   install(root);
 }
 
-function install(root) {
-  const templateName = 'pls-template';
-  const child = spawn('yarnpkg', ['add', '--exact', templateName, '--cwd', root], { stdio: 'inherit' });
-
+function Spawn (command, args, stdio) {
+ return new Promise((resolve, reject) => {
+  const child = spawn(command, args, stdio);
   child.on('close', code => {
     if (code === 0) {
-      const appPackage = require(path.join(root, 'package.json'));
-      const templatePath = path.dirname(
-        require.resolve(`pls-template/package.json`, { paths: [root] })
-      );
-      
-      const templateJsonPath = path.join(templatePath, 'template.json');
-      let templateJson = {};
-      if (fs.existsSync(templateJsonPath)) {
-        templateJson = require(templateJsonPath);
-      }
-      const templatePackage = templateJson.package || {};
-      const templateDir = path.join(templatePath, 'template');
-      appPackage.dependencies = templatePackage.dependencies;
-      appPackage.scripts = {
-        start: "webpack-dev-server --open --config build/webpack.dev.js",
-        build: "webpack --config build/webpack.prod.js",
-        lint: "eslint src"
-      };
-      const command = 'yarnpkg';
-      const remove = 'remove';
-      let args = ['add', '--exact'];
-      const dependenciesToInstall = Object.entries({
-        ...templatePackage.dependencies,
-        ...templatePackage.devDependencies,
-      });
-      args = args.concat(
-        dependenciesToInstall.map(([dependency, version]) => {
-          return `${dependency}@${version}`;
-        })
-      );
-
-      fs.writeFileSync(
-        path.join(root, 'package.json'),
-        JSON.stringify(appPackage, null, 2) + os.EOL
-      );
-      
-      fs.copySync(templateDir, root);
-      spawn.sync(command, [...args, '--cwd', root], { stdio: 'inherit' });
-      spawn.sync(command, [remove, templateName], {
-        stdio: 'inherit',
-      });
-  
+      resolve();
+      return;
     }
+    reject();
   });
+ });
+}
+
+function writePackage(root, templatePackage) {
+  const appPackage = require(path.join(root, 'package.json'));
+  appPackage.dependencies = templatePackage.dependencies;
+  appPackage.scripts = {
+    start: "webpack-dev-server --open --config build/webpack.dev.js",
+    build: "webpack --config build/webpack.prod.js",
+    lint: "eslint src"
+  };
+  fs.writeFileSync(
+    path.join(root, 'package.json'),
+    JSON.stringify(appPackage, null, 2) + os.EOL
+  );
+}
+
+function copyTemp(root, templatePath) {
+  const templateDir = path.join(templatePath, 'template');
+  fs.copySync(templateDir, root);
 }
 
 init();
