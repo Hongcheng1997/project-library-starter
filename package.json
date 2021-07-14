@@ -4,9 +4,7 @@
   "description": "基于 webpack 配置的项目启动程序",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --open --config build/webpack.dev.js",
-    "build": "webpack --config build/webpack.prod.js",
-    "lint": "eslint src"
+    "start": "lerna bootstrap"
   },
   "bin": {
     "create-project-app": "./bin/create-project-app.js"
